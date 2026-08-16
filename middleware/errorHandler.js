@@ -1,28 +1,14 @@
-/**
- * Global Error Handling Middleware
- * This middleware catches all errors from controllers and routes
- * and returns a clean JSON response without exposing stack traces to clients
- *
- * Must be registered LAST in server.js (after all routes and middleware)
- * Express recognizes error handlers by their 4-argument signature: (err, req, res, next)
- */
+// Global error handler, must be defined with 4 arguments so Express
+// recognizes it as error-handling middleware.
 const errorHandler = (err, req, res, next) => {
-  // Log the full error details on the server side (for debugging)
-  console.error("❌ Error:", err.message);
-  if (process.env.NODE_ENV === "development") {
-    console.error(err.stack); // Only log stack traces in development
-  }
+  console.error(err.stack); // log full error server-side only
 
-  // Set status code (default to 500 if not specified)
-  const statusCode = err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
+  const statusCode = err.statusCode && err.statusCode !== 200 ? err.statusCode : 500;
 
-  // Send clean JSON error response to client (no stack trace exposed)
   res.status(statusCode).json({
     success: false,
-    message: message,
-    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+    message: statusCode === 500 ? "Internal Server Error" : err.message,
   });
 };
 
-export default errorHandler;
+module.exports = errorHandler;
