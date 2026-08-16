@@ -1,0 +1,53 @@
+@baseUrl = http://localhost:5000/api/tasks
+
+### Create a task
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "title": "Finish backend assignment",
+  "description": "Build the REST API for the To-Do app",
+  "dueDate": "2026-08-25"
+}
+
+### Get all tasks
+GET {{baseUrl}}
+
+### Get all completed tasks
+GET {{baseUrl}}?completed=true
+
+### Get a single task (replace :id with a real ID)
+GET {{baseUrl}}/6512f1a2c3b4d5e6f7890123
+
+### Update a task (PATCH — partial update)
+PATCH {{baseUrl}}/6512f1a2c3b4d5e6f7890123
+Content-Type: application/json
+
+{
+  "isCompleted": true
+}
+
+### Update a task (PUT — full update)
+PUT {{baseUrl}}/6512f1a2c3b4d5e6f7890123
+Content-Type: application/json
+
+{
+  "title": "Finish backend assignment (updated)",
+  "description": "Build and test the REST API",
+  "isCompleted": true,
+  "dueDate": "2026-08-26"
+}
+
+### Delete a task
+DELETE {{baseUrl}}/6512f1a2c3b4d5e6f7890123
+
+### Trigger a 400 (missing title)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "description": "This should fail validation"
+}
+
+### Trigger a 404 (non-existent ID)
+GET {{baseUrl}}/000000000000000000000000

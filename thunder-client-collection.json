@@ -1,0 +1,247 @@
+{
+  "info": {
+    "name": "To-Do List API",
+    "description": "Production-ready REST API for a collaborative To-Do List application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Buy groceries\",\n  \"description\": \"Milk, eggs, bread, butter\",\n  \"dueDate\": \"2024-12-25\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/tasks",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tasks"]
+            },
+            "description": "Create a new task. Title is required."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Tasks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/tasks",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tasks"]
+            },
+            "description": "Get all tasks. Optional query: ?completed=true or ?completed=false"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Completed Tasks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/tasks?completed=true",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tasks"],
+              "query": [
+                {
+                  "key": "completed",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Get only completed tasks"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Incomplete Tasks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/tasks?completed=false",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tasks"],
+              "query": [
+                {
+                  "key": "completed",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Get only incomplete tasks"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Task by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/tasks/507f1f77bcf86cd799439011",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tasks", "507f1f77bcf86cd799439011"]
+            },
+            "description": "Get a specific task by its MongoDB ObjectId. Replace the ID with an actual task ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Task (PUT - Full Update)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Buy groceries (UPDATED)\",\n  \"description\": \"Updated list: Milk, eggs, bread, butter, cheese\",\n  \"isCompleted\": true,\n  \"dueDate\": \"2024-12-26\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/tasks/507f1f77bcf86cd799439011",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tasks", "507f1f77bcf86cd799439011"]
+            },
+            "description": "Fully update a task (all fields). Replace the ID with an actual task ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Task (PATCH - Partial Update)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isCompleted\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/tasks/507f1f77bcf86cd799439011",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tasks", "507f1f77bcf86cd799439011"]
+            },
+            "description": "Partially update a task (only provided fields). Replace the ID with an actual task ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Task",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/tasks/507f1f77bcf86cd799439011",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tasks", "507f1f77bcf86cd799439011"]
+            },
+            "description": "Delete a task by ID. Replace the ID with an actual task ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Error Tests",
+      "item": [
+        {
+          "name": "Error: Create without title",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"\",\n  \"description\": \"This will fail validation\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/tasks",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tasks"]
+            },
+            "description": "Should return 400 - Title is required"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Invalid task ID format",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/tasks/invalid-id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tasks", "invalid-id"]
+            },
+            "description": "Should return 400 - Invalid task ID format"
+          },
+          "response": []
+        },
+        {
+          "name": "Error: Task not found",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/tasks/000000000000000000000000",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tasks", "000000000000000000000000"]
+            },
+            "description": "Should return 404 - Task not found (valid ID format but doesn't exist)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
