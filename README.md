@@ -4,6 +4,7 @@ A REST API for a collaborative To-Do List application, built with Node.js, Expre
 
 ## Table of Contents
 
+- [Project Overview](#project-overview)
 - [Prerequisites](#prerequisites)
 - [Project Setup](#project-setup)
 - [Environment Variables](#environment-variables)
@@ -14,6 +15,14 @@ A REST API for a collaborative To-Do List application, built with Node.js, Expre
 - [Testing the API](#testing-the-api)
 - [Troubleshooting](#troubleshooting)
 - [Verifying Data Persistence](#verifying-data-persistence)
+
+---
+
+## Project Overview
+
+This project implements a full CRUD REST API for managing to-do tasks. It supports creating, reading, updating, and deleting tasks, with input validation, filtering by completion status, and centralized error handling. Data is persisted in MongoDB using Mongoose as the schema and query layer.
+
+Each task has the following fields: `title` (required), `description` (optional), `isCompleted` (defaults to false), `dueDate` (optional), and automatic `createdAt`/`updatedAt` timestamps.
 
 ---
 
@@ -42,7 +51,7 @@ A REST API for a collaborative To-Do List application, built with Node.js, Expre
 
 3. Create a `.env` file in the project root (see [Environment Variables](#environment-variables) below).
 
-4. Start MongoDB, either locally or via Atlas (see database setup sections below).
+4. Set up MongoDB, either locally or via Atlas (see the two database setup sections below).
 
 5. Run the server:
 
@@ -60,13 +69,13 @@ Create a `.env` file in the project root. Do not commit this file, it is already
 
 ```
 PORT=5000
-MONGO_URI=<your-mongodb-connection-string>
+MONGODB_URI=<your-mongodb-connection-string>
 ```
 
-| Variable    | Description                        | Required              |
-| ----------- | ---------------------------------- | --------------------- |
-| `PORT`      | Port the Express server listens on | No (defaults to 5000) |
-| `MONGO_URI` | Full MongoDB connection string     | Yes                   |
+| Variable      | Description                        | Required              |
+| ------------- | ---------------------------------- | --------------------- |
+| `PORT`        | Port the Express server listens on | No (defaults to 5000) |
+| `MONGODB_URI` | Full MongoDB connection string     | Yes                   |
 
 ---
 
@@ -95,7 +104,7 @@ By default, this runs MongoDB on `127.0.0.1:27017`.
 In `.env`:
 
 ```
-MONGO_URI=mongodb://127.0.0.1:27017/todo-api
+MONGODB_URI=mongodb://127.0.0.1:27017/todo-api
 ```
 
 Here, `todo-api` is the database name. MongoDB creates it automatically the first time data is written.
@@ -111,8 +120,8 @@ npm run dev
 Expected terminal output:
 
 ```
-MongoDB connected: 127.0.0.1
-Server running on port 5000
+MongoDB connected successfully
+Server running on http://localhost:5000
 ```
 
 ---
@@ -156,7 +165,7 @@ Go to [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas) and sign up
 In `.env`, insert your credentials and add a database name before the `?`:
 
 ```
-MONGO_URI=mongodb+srv://myuser:mypassword@cluster0.xxxxx.mongodb.net/todo-api?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://myuser:mypassword@cluster0.xxxxx.mongodb.net/todo-api?retryWrites=true&w=majority
 ```
 
 Note: if your password contains special characters (`@`, `#`, `%`, etc.), URL-encode them or the connection will fail.
@@ -170,8 +179,8 @@ npm run dev
 Expected output:
 
 ```
-MongoDB connected: cluster0-shard-00-00.xxxxx.mongodb.net
-Server running on port 5000
+MongoDB connected successfully
+Server running on http://localhost:5000
 ```
 
 ---
@@ -197,8 +206,7 @@ npm start
 | POST   | /api/tasks     | Create a new task                                     |
 | GET    | /api/tasks     | Get all tasks (optional `?completed=true` or `false`) |
 | GET    | /api/tasks/:id | Get a single task by ID                               |
-| PUT    | /api/tasks/:id | Fully update a task                                   |
-| PATCH  | /api/tasks/:id | Partially update a task                               |
+| PUT    | /api/tasks/:id | Update a task                                         |
 | DELETE | /api/tasks/:id | Delete a task                                         |
 
 ### Task Schema
@@ -216,7 +224,7 @@ npm start
 
 ## Testing the API
 
-Use the included `api.http` file with the VS Code "REST Client" extension, or import the endpoints into Postman or Thunder Client manually using the endpoint table above.
+Use the included `.http` file with the VS Code "REST Client" extension, or import the endpoints into Postman using the endpoint table above.
 
 Example request bodies:
 
@@ -230,7 +238,7 @@ Create a task:
 }
 ```
 
-Update a task (PATCH):
+Update a task:
 
 ```json
 {
@@ -247,7 +255,7 @@ Update a task (PATCH):
 | `MongooseServerSelectionError`               | MongoDB is not running locally                                 | Run `mongod` in a separate terminal                                        |
 | `Authentication failed`                      | Wrong username or password in Atlas URI                        | Recheck credentials in Database Access                                     |
 | Connection timeout on Atlas                  | IP not whitelisted                                             | Add your IP (or `0.0.0.0/0`) in Network Access                             |
-| `MONGO_URI is undefined`                     | `.env` file missing or `dotenv.config()` not called before use | Confirm `.env` exists and `dotenv.config()` runs at the top of `server.js` |
+| `MONGODB_URI is undefined`                   | `.env` file missing or `dotenv.config()` not called before use | Confirm `.env` exists and `dotenv.config()` runs at the top of `server.js` |
 | Special characters in password break the URI | Password not URL-encoded                                       | Encode characters like `@` to `%40`, `#` to `%23`                          |
 
 ---

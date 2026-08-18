@@ -40,13 +40,10 @@ const getTasks = async (req, res, next) => {
           message: "completed must be true or false",
         });
       }
-
       filter.isCompleted = req.query.completed === "true";
     }
-
     // Newest tasks first
     const tasks = await Task.find(filter).sort({ createdAt: -1 });
-
     res.status(200).json({
       success: true,
       count: tasks.length,
