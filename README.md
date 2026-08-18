@@ -39,7 +39,7 @@ Each task has the following fields: `title` (required), `description` (optional)
 1. Clone the repository:
 
 ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/Prazol452412/ToDo-App.git
    cd todo-api
 ```
 
