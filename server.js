@@ -1,31 +1,51 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const connectDB = require("./config/db");
+
 const taskRoutes = require("./routes/taskRoutes");
-const notFound = require("./middleware/notFound");
 const errorHandler = require("./middleware/errorHandler");
 
 dotenv.config();
-connectDB();
 
 const app = express();
-
-app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.json({ message: "To-Do List API is running" });
-});
-
-app.use("/api/tasks", taskRoutes);
-
-// 404 handler — must come after all valid routes
-app.use(notFound);
-
-// global error handler — must be the last middleware
-app.use(errorHandler);
-
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Parse JSON request bodies
+app.use(express.json());
+
+// Home route
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Simple Todo API is running",
+  });
 });
+
+// Task routes
+app.use("/api/tasks", taskRoutes);
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+  });
+});
+
+// Global error handler
+app.use(errorHandler);
+
+// Connect to MongoDB and start server
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("MongoDB connected successfully");
+
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("MongoDB connection failed:", error.message);
+    process.exit(1);
+  });

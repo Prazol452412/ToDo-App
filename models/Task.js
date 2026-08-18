@@ -8,22 +8,23 @@ const taskSchema = new mongoose.Schema(
       trim: true,
       maxlength: [100, "Title cannot exceed 100 characters"],
     },
+
     description: {
       type: String,
       trim: true,
-      default: "",
     },
+
     isCompleted: {
       type: Boolean,
       default: false,
     },
+
     dueDate: {
       type: Date,
-      default: null,
     },
   },
   {
-    timestamps: true, // adds createdAt and updatedAt automatically
+    timestamps: true,
   }
 );
 
