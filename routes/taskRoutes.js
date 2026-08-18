@@ -1,3 +1,8 @@
+// routes/taskRoutes.js
+// Maps each HTTP method + path to its controller function.
+// Mounted in server.js at app.use("/api/tasks", taskRoutes)
+// so these paths become: POST /api/tasks, GET /api/tasks/:id, etc.
+
 const express = require("express");
 
 const {
@@ -10,10 +15,10 @@ const {
 
 const router = express.Router();
 
-router.post("/", createTask);
-router.get("/", getTasks);
-router.get("/:id", getTask);
-router.put("/:id", updateTask);
-router.delete("/:id", deleteTask);
+router.post("/", createTask);       // POST   /api/tasks
+router.get("/", getTasks);          // GET    /api/tasks?completed=true
+router.get("/:id", getTask);        // GET    /api/tasks/:id
+router.put("/:id", updateTask);     // PUT    /api/tasks/:id
+router.delete("/:id", deleteTask);  // DELETE /api/tasks/:id
 
 module.exports = router;

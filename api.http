@@ -1,53 +1,47 @@
+### Todo API: sample requests
+### Works directly with the VS Code "REST Client" extension.
+### For Postman: import this file via File > Import (Postman supports .http/.rest files),
+### or recreate each request manually using the method/url/body below.
+
 @baseUrl = http://localhost:5000/api/tasks
 
-### Create a task
+### 1. CREATE TASK (expect 201)
 POST {{baseUrl}}
 Content-Type: application/json
 
 {
-  "title": "Finish backend assignment",
-  "description": "Build the REST API for the To-Do app",
+  "title": "Finish assignment",
+  "description": "Build and test the Todo REST API",
   "dueDate": "2026-08-25"
 }
 
-### Get all tasks
+### 1b. CREATE TASK - validation failure (expect 400 once errorHandler fix is applied)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "description": "Missing the required title field"
+}
+
+### 2. GET ALL TASKS (expect 200)
 GET {{baseUrl}}
 
-### Get all completed tasks
-GET {{baseUrl}}?completed=true
+### 2b. GET ALL TASKS - filtered (expect 200)
+GET {{baseUrl}}?completed=false
 
-### Get a single task (replace :id with a real ID)
-GET {{baseUrl}}/6512f1a2c3b4d5e6f7890123
+### 3. GET ONE TASK (replace :id with a real _id from step 1's response) (expect 200)
+GET {{baseUrl}}/REPLACE_WITH_TASK_ID
 
-### Update a task (PATCH — partial update)
-PATCH {{baseUrl}}/6512f1a2c3b4d5e6f7890123
+### 3b. GET ONE TASK - not found (expect 404)
+GET {{baseUrl}}/000000000000000000000000
+
+### 4. UPDATE TASK (expect 200)
+PUT {{baseUrl}}/REPLACE_WITH_TASK_ID
 Content-Type: application/json
 
 {
   "isCompleted": true
 }
 
-### Update a task (PUT — full update)
-PUT {{baseUrl}}/6512f1a2c3b4d5e6f7890123
-Content-Type: application/json
-
-{
-  "title": "Finish backend assignment (updated)",
-  "description": "Build and test the REST API",
-  "isCompleted": true,
-  "dueDate": "2026-08-26"
-}
-
-### Delete a task
-DELETE {{baseUrl}}/6512f1a2c3b4d5e6f7890123
-
-### Trigger a 400 (missing title)
-POST {{baseUrl}}
-Content-Type: application/json
-
-{
-  "description": "This should fail validation"
-}
-
-### Trigger a 404 (non-existent ID)
-GET {{baseUrl}}/000000000000000000000000
+### 5. DELETE TASK (expect 204)
+DELETE {{baseUrl}}/REPLACE_WITH_TASK_ID
